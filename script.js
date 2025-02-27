@@ -1,19 +1,32 @@
-const apiUrl = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/strasbourg/today?unitGroup=metric&include=current&key=PJQCV9M4WZ6Y5JCJ3472AHQZF&contentType=json";
+const weatherForm = document.querySelector(".weather-form");
 
-const fetchWeather = () => {
-  fetch(apiUrl)
+const fetchWeather = (location) => {
+
+  const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/today?unitGroup=metric&include=current&key=PJQCV9M4WZ6Y5JCJ3472AHQZF&contentType=json`;
+
+  fetch(url)
     .then((response) => {
       return response.json();
     })
     .then((response) => {
-      console.log(response.resolvedAddress);
-      console.log(response.days[0].temp);
+      const weatherInfo = {
+        location: response.resolvedAddress,
+        conditions: response.days[0].description,
+        temp: response.days[0].temp,
+      };
+
+      console.log(weatherInfo);
     })
     .catch((err) => {
       console.log(err);
-    })
-}
+    });
+};
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchWeather();
+weatherForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const locationInput = document.querySelector(".location-input");
+  const location = locationInput.value;
+  
+  fetchWeather(location);
 });
