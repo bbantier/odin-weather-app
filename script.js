@@ -12,7 +12,7 @@ const fetchWeather = (location) => {
       const weatherInfo = {
         location: response.resolvedAddress,
         conditions: response.days[0].description,
-        temp: response.days[0].temp,
+        temp: `${Math.round(response.days[0].temp)}° C`,
       };
 
       console.log(weatherInfo);
