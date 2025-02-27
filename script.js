@@ -1,7 +1,6 @@
 const weatherForm = document.querySelector(".weather-form");
 
 const fetchWeather = (location) => {
-
   const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/today?unitGroup=metric&include=current&key=PJQCV9M4WZ6Y5JCJ3472AHQZF&contentType=json`;
 
   fetch(url)
@@ -15,11 +14,25 @@ const fetchWeather = (location) => {
         temp: `${Math.round(response.days[0].temp)}° C`,
       };
 
-      console.log(weatherInfo);
+      renderResponse(
+        weatherInfo.location,
+        weatherInfo.conditions,
+        weatherInfo.temp
+      );
     })
     .catch((err) => {
       console.log(err);
     });
+};
+
+const renderResponse = (location, conditions, temperature) => {
+  const locationSpan = document.querySelector(".location");
+  const conditionsSpan = document.querySelector(".conditions");
+  const tempSpan = document.querySelector(".temperature");
+
+  locationSpan.textContent = location;
+  conditionsSpan.textContent = conditions;
+  tempSpan.textContent = temperature;
 };
 
 weatherForm.addEventListener("submit", (event) => {
@@ -27,6 +40,6 @@ weatherForm.addEventListener("submit", (event) => {
 
   const locationInput = document.querySelector(".location-input");
   const location = locationInput.value;
-  
+
   fetchWeather(location);
 });
